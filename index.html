@@ -31,28 +31,33 @@
         });
         var ground = Bodies.rectangle(800,600,810,60,{ isStatic: true,});
         var head = Bodies.circle(800,550,50);
-        var platform1 = Bodies.rectangle(395,420,300,50,{ isStatic: true,});
-        var platform2 = Bodies.rectangle(1205,420,300,50,{ isStatic: true,});
-        var platform3 = Bodies.rectangle(800,420,300,50,{ isStatic: true,});
+        var head1 = Bodies.circle(900,50,50);
+        var platform1 = Bodies.rectangle(395,420,250,50,{ isStatic: true,});
+        var platform2 = Bodies.rectangle(1205,420,250,50,{ isStatic: true,});
+        var platform3 = Bodies.rectangle(800,300,250,50,{ isStatic: true,});
+        var kwadrat = Bodies.rectangle(800,50,150,150,{ isStatic: false,});
         var stick = Bodies.circle(450,50,50);
 
-        World.add(engine.world,[stick,platform1,platform2,ground]);
+
+        let map = Body.create({
+            parts: [ground,platform1,platform2,platform3],
+            isStatic: true
+            
+        });
+
+        World.add(engine.world,[stick,map,kwadrat,head1]);
         Engine.run(engine);
         Render.run(render);
 
-        
+    
    
     document.addEventListener('keydown', function(event) {
   if (event.code == 'KeyW' 
-  && Matter.SAT.collides(stick, ground ).collided == true) {
-    Body.applyForce( stick, {x: stick.position.x, y: stick.position.y}, {x: 0, y: -0.4});
-  }
-  if (event.code == 'KeyW' 
-  && Matter.SAT.collides(stick, platform1 ).collided == true) {
+  && Matter.Collision.collides( stick,map).collided == true ){
     Body.applyForce( stick, {x: stick.position.x, y: stick.position.y}, {x: 0, y: -0.4});
   }
   if (event.code == 'KeyS' ) {
-    Body.applyForce( stick, {x: stick.position.x, y: stick.position.y}, {x: 0, y: 0.1});
+    Body.applyForce( stick, {x: stick.position.x, y: stick.position.y}, {x: 0, y: 0.2});
   }
 
   if (event.code == 'KeyA') {
@@ -61,26 +66,25 @@
   if (event.code == 'KeyD') {
     Body.applyForce( stick, {x: stick.position.x, y: stick.position.y}, {x: 0.10, y: 0});
     }
+  
 });
-const limitMaxSpeed = () => {
-            let maxSpeed = 0.1;
-            if (body.velocity.x > maxSpeed) {
-                Body.setVelocity(stick, { x: maxSpeed, y: stick.velocity.y });
-            }
-        
-            if (body.velocity.x < -maxSpeed) {
-                Body.setVelocity(stick, { x: -maxSpeed, y: stick.velocity.y });
-            }
-        
-            if (body.velocity.y > maxSpeed) {
-                Body.setVelocity(stick, { x: stick.velocity.x, y: maxSpeed });
-            }
-        
-            if (body.velocity.y < -maxSpeed) {
-                Body.setVelocity(stick, { x: -stick.velocity.x, y: -maxSpeed });
-            }
-        }
-        Events.on(engine, 'beforeUpdate', limitMaxSpeed);
+document.addEventListener('keydown', function(event) {
+    if (event.code == 'KeyI' 
+  && Matter.Collision.collides(head1,map).collided == true){
+    Body.applyForce( head1, {x: head1.position.x, y: head1.position.y}, {x: 0, y: -0.4});
+  }
+  if (event.code == 'KeyK' ) {
+    Body.applyForce( head1, {x: head1.position.x, y: head1.position.y}, {x: 0, y: 0.2});
+  }
+
+  if (event.code == 'KeyJ') {
+    Body.applyForce( head1, {x: head1.position.x, y: head1.position.y}, {x: -0.10, y: 0});
+  }
+  if (event.code == 'KeyL') {
+    Body.applyForce( head1, {x: head1.position.x, y: head1.position.y}, {x: 0.10, y: 0});
+    }
+});
+
     </script>   
 </body>
 </html>
