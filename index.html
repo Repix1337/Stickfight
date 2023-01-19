@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script  type="text/javascript" src="matter.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <title>SFOnline</title>
+</head>
+<body>
+    <script>
+        
+       
+
+        var Engine = Matter.Engine,
+        Render = Matter.Render,
+        World = Matter.World,
+        Bodies = Matter.Bodies,
+        Body = Matter.Body;
+
+        var engine = Engine.create();
+
+        var render = Render.create({
+            element: document.body,
+            engine: engine,
+            options : {
+                width: 1920,
+                height: 890
+            }
+        });
+        var ground = Bodies.rectangle(800,600,810,60,{ isStatic: true,});
+        var head = Bodies.circle(800,550,50);
+        var platform1 = Bodies.rectangle(395,420,300,50,{ isStatic: true,});
+        var platform2 = Bodies.rectangle(1205,420,300,50,{ isStatic: true,});
+        var platform3 = Bodies.rectangle(800,420,300,50,{ isStatic: true,});
+        var stick = Bodies.circle(450,50,50);
+
+        World.add(engine.world,[stick,platform1,platform2,ground]);
+        Engine.run(engine);
+        Render.run(render);
+
+        
+   
+    document.addEventListener('keydown', function(event) {
+  if (event.code == 'KeyW' 
+  && Matter.SAT.collides(stick, ground ).collided == true) {
+    Body.applyForce( stick, {x: stick.position.x, y: stick.position.y}, {x: 0, y: -0.4});
+  }
+  if (event.code == 'KeyW' 
+  && Matter.SAT.collides(stick, platform1 ).collided == true) {
+    Body.applyForce( stick, {x: stick.position.x, y: stick.position.y}, {x: 0, y: -0.4});
+  }
+  if (event.code == 'KeyS' ) {
+    Body.applyForce( stick, {x: stick.position.x, y: stick.position.y}, {x: 0, y: 0.1});
+  }
+
+  if (event.code == 'KeyA') {
+    Body.applyForce( stick, {x: stick.position.x, y: stick.position.y}, {x: -0.10, y: 0});
+  }
+  if (event.code == 'KeyD') {
+    Body.applyForce( stick, {x: stick.position.x, y: stick.position.y}, {x: 0.10, y: 0});
+    }
+});
+const limitMaxSpeed = () => {
+            let maxSpeed = 0.1;
+            if (body.velocity.x > maxSpeed) {
+                Body.setVelocity(stick, { x: maxSpeed, y: stick.velocity.y });
+            }
+        
+            if (body.velocity.x < -maxSpeed) {
+                Body.setVelocity(stick, { x: -maxSpeed, y: stick.velocity.y });
+            }
+        
+            if (body.velocity.y > maxSpeed) {
+                Body.setVelocity(stick, { x: stick.velocity.x, y: maxSpeed });
+            }
+        
+            if (body.velocity.y < -maxSpeed) {
+                Body.setVelocity(stick, { x: -stick.velocity.x, y: -maxSpeed });
+            }
+        }
+        Events.on(engine, 'beforeUpdate', limitMaxSpeed);
+    </script>   
+</body>
+</html>
