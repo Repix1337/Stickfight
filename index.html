@@ -30,20 +30,32 @@
             }
         });
         var ground = Bodies.rectangle(800,600,810,60,{ isStatic: true,});
-        var head = Bodies.circle(800,550,50);
+        var head = Bodies.circle(700,50,25);
+        var body = Bodies.rectangle(700,110,50,70);
+        var arm_r = Bodies.rectangle(750,100,30,60);
+        var arm_l = Bodies.rectangle(650,100,30,60);
+        var leg_l = Bodies.rectangle(680,170,20,50);
+        var leg_r = Bodies.rectangle(720,170,20,50);
         var head1 = Bodies.circle(900,50,50);
         var platform1 = Bodies.rectangle(395,420,250,50,{ isStatic: true,});
         var platform2 = Bodies.rectangle(1205,420,250,50,{ isStatic: true,});
         var platform3 = Bodies.rectangle(800,300,250,50,{ isStatic: true,});
         var kwadrat = Bodies.rectangle(800,50,150,150,{ isStatic: false,});
-        var stick = Bodies.circle(450,50,50);
-
+        
+        Body.rotate(arm_l, 350)
+        Body.rotate(arm_r, 27)
 
         let map = Body.create({
             parts: [ground,platform1,platform2,platform3],
             isStatic: true
             
         });
+
+        let stick = Body.create({
+          parts: [head,body,arm_l,arm_r,leg_l,leg_r],
+          isStatic: false
+
+        })
 
         World.add(engine.world,[stick,map,kwadrat,head1]);
         Engine.run(engine);
